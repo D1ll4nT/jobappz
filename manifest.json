@@ -1,0 +1,34 @@
+{
+  "name": "Job Application Autofill & Gemini Rewriter",
+  "description": "Autofill job apps, rewrite selected fields with Gemini, and record every submission to Google Sheets.",
+  "version": "0.1.0",
+  "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://script.google.com/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Job Autofill"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  }
+} 

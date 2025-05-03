@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><title>Job Autofill – Settings</title></head>
+<body style="font-family:sans-serif;max-width:600px;padding:1rem;">
+  <h2>Extension Settings</h2>
+  <form id="opts">
+    <fieldset><legend>Profile</legend>
+      <input placeholder="First Name" name="firstName"><br>
+      <input placeholder="Last Name"  name="lastName"><br>
+      <input placeholder="Email"       name="email"><br>
+      <input placeholder="Phone"       name="phone"><br>
+      <input placeholder="LinkedIn URL"name="linkedin"><br>
+      <input placeholder="Portfolio / Website" name="website"><br>
+    </fieldset>
+    <fieldset><legend>Resume (PDF only)</legend>
+      <input type="file" id="resumeFile" accept="application/pdf"><br>
+      <div id="resumeStatus" style="font-size:0.9em;color:#555;"></div>
+    </fieldset>
+    <fieldset><legend>APIs</legend>
+      <input placeholder="Gemini API Key" name="apiKey" style="width:100%"><br>
+      <input placeholder="Google Sheet Web‑App URL" name="sheetEndpoint" style="width:100%"><br>
+    </fieldset>
+    <fieldset><legend>Options</legend>
+      <label><input type="checkbox" name="autofillEnabled"> Enable automatic form filling</label><br>
+      <label>Tone for rewrites <input name="rewriteTone" value="concise professional"></label>
+    </fieldset>
+    <button type="submit">Save</button>
+  </form>
+  <script src="options.js"></script>
+</body></html> 
