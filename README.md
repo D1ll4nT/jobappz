@@ -105,6 +105,6 @@ function doPost(e){
 ---
 
 ## Credits & License
-- Built by [Your Name].
+- Built by Dillan Thrasher.
 - Uses [pdfjs-dist](https://mozilla.github.io/pdf.js/) for PDF parsing.
 - MIT License. 
