@@ -1,30 +1,159 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><title>Job Autofill – Settings</title></head>
-<body style="font-family:sans-serif;max-width:600px;padding:1rem;">
-  <h2>Extension Settings</h2>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Job Autofill – Settings</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      line-height: 1.5;
+      color: #333;
+    }
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+    }
+    fieldset {
+      margin-bottom: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 1rem;
+    }
+    legend {
+      font-weight: bold;
+      color: #3498db;
+      padding: 0 0.5rem;
+    }
+    input[type="text"], 
+    input[type="email"], 
+    input[type="tel"], 
+    input[type="url"] {
+      display: block;
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .option-row {
+      margin-bottom: 1rem;
+    }
+    #resumeStatus {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      color: #555;
+      font-style: italic;
+    }
+    .api-key-input {
+      font-family: monospace;
+    }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      font-weight: normal;
+    }
+    .checkbox-label input {
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>Job Application Autofill – Settings</h2>
+  
   <form id="opts">
-    <fieldset><legend>Profile</legend>
-      <input placeholder="First Name" name="firstName"><br>
-      <input placeholder="Last Name"  name="lastName"><br>
-      <input placeholder="Email"       name="email"><br>
-      <input placeholder="Phone"       name="phone"><br>
-      <input placeholder="LinkedIn URL"name="linkedin"><br>
-      <input placeholder="Portfolio / Website" name="website"><br>
+    <fieldset>
+      <legend>Profile Information</legend>
+      <div class="option-row">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" name="firstName" placeholder="First name">
+      </div>
+      
+      <div class="option-row">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Last name">
+      </div>
+      
+      <div class="option-row">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Your email address">
+      </div>
+      
+      <div class="option-row">
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" placeholder="Phone number">
+      </div>
+      
+      <div class="option-row">
+        <label for="linkedin">LinkedIn URL</label>
+        <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+      </div>
+      
+      <div class="option-row">
+        <label for="website">Portfolio / Website</label>
+        <input type="url" id="website" name="website" placeholder="https://yourwebsite.com">
+      </div>
     </fieldset>
-    <fieldset><legend>Resume (PDF only)</legend>
-      <input type="file" id="resumeFile" accept="application/pdf"><br>
-      <div id="resumeStatus" style="font-size:0.9em;color:#555;"></div>
+    
+    <fieldset>
+      <legend>Resume Upload (PDF only)</legend>
+      <p>Upload your resume to automatically extract profile information.</p>
+      <input type="file" id="resumeFile" accept="application/pdf">
+      <div id="resumeStatus"></div>
     </fieldset>
-    <fieldset><legend>APIs</legend>
-      <input placeholder="Gemini API Key" name="apiKey" style="width:100%"><br>
-      <input placeholder="Google Sheet Web‑App URL" name="sheetEndpoint" style="width:100%"><br>
+    
+    <fieldset>
+      <legend>API Keys</legend>
+      <div class="option-row">
+        <label for="apiKey">Gemini API Key</label>
+        <input type="text" id="apiKey" name="apiKey" placeholder="Get key from Google AI Studio" class="api-key-input">
+      </div>
+      
+      <div class="option-row">
+        <label for="sheetEndpoint">Google Sheet Web App URL</label>
+        <input type="url" id="sheetEndpoint" name="sheetEndpoint" placeholder="https://script.google.com/macros/s/YOUR_ENDPOINT/exec" class="api-key-input">
+      </div>
     </fieldset>
-    <fieldset><legend>Options</legend>
-      <label><input type="checkbox" name="autofillEnabled"> Enable automatic form filling</label><br>
-      <label>Tone for rewrites <input name="rewriteTone" value="concise professional"></label>
+    
+    <fieldset>
+      <legend>Options</legend>
+      <div class="option-row">
+        <label class="checkbox-label">
+          <input type="checkbox" name="autofillEnabled"> 
+          Enable automatic form filling on page load
+        </label>
+      </div>
+      
+      <div class="option-row">
+        <label for="rewriteTone">Tone for Gemini rewrites</label>
+        <input type="text" id="rewriteTone" name="rewriteTone" value="concise professional">
+      </div>
     </fieldset>
-    <button type="submit">Save</button>
+    
+    <button type="submit">Save Settings</button>
   </form>
+
   <script src="options.js"></script>
-</body></html> 
+</body>
+</html> 
