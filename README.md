@@ -140,4 +140,4 @@ function doPost(e){
 
 - Built by Dillan Thrasher.
 - Uses [PDF.js](https://mozilla.github.io/pdf.js/) for PDF parsing.
-- MIT License. 
+- MIT License.

@@ -11,16 +11,27 @@ const resumeStatus = document.getElementById('resumeStatus');
 
 // Add PDF.js script dynamically if it's not already loaded
 if (typeof pdfjsLib === 'undefined') {
-  // Add PDF.js from CDN
+  // Add PDF.js from local lib
   const pdfJsScript = document.createElement('script');
-  pdfJsScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  pdfJsScript.src = 'lib/pdf.min.js'; // Changed from CDN to local
   document.head.appendChild(pdfJsScript);
   
-  // Configure worker
+  // Configure worker from local lib
   pdfJsScript.onload = () => {
-    const workerScript = document.createElement('script');
-    workerScript.textContent = 'pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";';
-    document.head.appendChild(workerScript);
+    // Check if pdfjsLib is now defined before configuring worker
+    if (typeof pdfjsLib !== 'undefined') { 
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdf.worker.min.js'; // Changed from CDN to local
+    } else {
+        console.error("pdfjsLib is still undefined after loading pdf.min.js");
+        // Handle error appropriately, maybe update status message
+        resumeStatus.textContent = 'Error: Failed to load PDF library.';
+    }
+  };
+  
+  // Optional: Add error handling for script loading itself
+  pdfJsScript.onerror = () => {
+      console.error("Failed to load lib/pdf.min.js");
+      resumeStatus.textContent = 'Error: Could not load PDF library script.';
   };
 }
 
@@ -90,17 +101,21 @@ async function handleResumeUpload(e) {
   resumeStatus.textContent = 'Parsing resume...';
   
   try {
-    // Wait for PDF.js to load if it was dynamically added
-    if (typeof pdfjsLib === 'undefined') {
-      resumeStatus.textContent = 'Waiting for PDF parser to load...';
-      await new Promise(resolve => {
-        const checkInterval = setInterval(() => {
-          if (typeof pdfjsLib !== 'undefined') {
-            clearInterval(checkInterval);
-            resolve();
-          }
-        }, 100);
-      });
+    // Ensure PDF.js library is loaded and worker is configured
+    if (typeof pdfjsLib === 'undefined' || !pdfjsLib.GlobalWorkerOptions.workerSrc) {
+      resumeStatus.textContent = 'Waiting for PDF library to initialize...';
+      // Wait a moment for the onload handler to potentially execute
+      await new Promise(resolve => setTimeout(resolve, 500)); 
+      
+      // Re-check if it loaded
+      if (typeof pdfjsLib === 'undefined') {
+          throw new Error('PDF library (pdf.js) failed to load.');
+      }
+      // Ensure worker is set if library loaded but workerSrc wasn't set in onload
+      if (!pdfjsLib.GlobalWorkerOptions.workerSrc) { 
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'lib/pdf.worker.min.js';
+          console.warn("PDF worker source set belatedly.");
+      }
     }
     
     // Parse the PDF
